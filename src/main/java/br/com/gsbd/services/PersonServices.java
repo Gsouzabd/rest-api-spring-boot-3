@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.gsbd.data.vo.v1.PersonVO;
+import br.com.gsbd.data.vo.v2.PersonVOV2;
 import br.com.gsbd.exceptions.ResourceNotFoundException;
 import br.com.gsbd.mapper.DozerMapper;
+import br.com.gsbd.mapper.custom.PersonMapper;
 import br.com.gsbd.model.Person;
 import br.com.gsbd.repositories.PersonRepository;
 
@@ -17,6 +19,9 @@ public class PersonServices {
 	
 	@Autowired
 	PersonRepository repository;
+	
+	@Autowired
+	PersonMapper personMapper;
 
 	private Logger logger = Logger.getLogger(PersonServices.class.getName());
 	
@@ -46,6 +51,17 @@ public class PersonServices {
 		var entity = DozerMapper.parseObject(personVO, Person.class);
 		
 		return DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+	}
+	
+	public PersonVOV2 createV2(PersonVOV2 personVOV2) {
+		
+		logger.info("Creating one person with v2!");
+				
+		var entity = personMapper.convertVoToEntity(personVOV2);
+		
+		var voV2 = personMapper.convertEntityToVo(repository.save(entity));
+		
+		return voV2;
 	}
 	
 	
