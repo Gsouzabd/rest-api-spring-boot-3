@@ -23,8 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
 //				.mediaType("xml", MediaType.APPLICATION_XML);
 //	}
 		
-//	VIA HEADER KEY  ("?mediaType=xml")
-
+		
+//	VIA HEADER KEY  ("Accept=application/json")
 		configurer.favorParameter(false)
 		.ignoreAcceptHeader(false)
 		.useRegisteredExtensionsOnly(false)
