@@ -10,6 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import br.com.gsbd.controllers.PersonController;
 import br.com.gsbd.data.vo.v1.PersonVO;
+import br.com.gsbd.exceptions.RequiredObjectIsNullException;
 import br.com.gsbd.exceptions.ResourceNotFoundException;
 import br.com.gsbd.mapper.DozerMapper;
 import br.com.gsbd.mapper.custom.PersonMapper;
@@ -64,6 +65,8 @@ public class PersonServices {
 	
 	
 	public PersonVO create(PersonVO personVO) throws Exception {
+		
+		if (personVO == null) throw new RequiredObjectIsNullException();
 		
 		logger.info("Creating one person!");
 		
