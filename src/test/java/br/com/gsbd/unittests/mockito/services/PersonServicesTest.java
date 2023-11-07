@@ -3,6 +3,7 @@ package br.com.gsbd.unittests.mockito.services;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,35 @@ class PersonServicesTest {
 
 	@Test
 	void testFindAll() {
-		fail("Not yet implemented");
+		List<Person> peopleList =  input.mockEntityList();
+		when(repository.findAll()).thenReturn(peopleList);
+		
+		var people = service.findAll();
+		
+		assertNotNull(people);
+		assertEquals(14, people.size());
+		
+		
+		var personOne = people.get(1);
+		assertNotNull(personOne);
+		assertNotNull(personOne.getKey());
+		assertNotNull(personOne.getLinks());
+		assertTrue(personOne.toString().contains("links: [</person/1>;rel=\"self\"]"));
+		assertEquals("Address Test1", personOne.getAddress());
+		assertEquals("First Name Test1", personOne.getFirstName());
+		assertEquals("Last Name Test1", personOne.getLastName());
+		assertEquals("Female", personOne.getGender());
+		
+		var personFour = people.get(4);
+		assertNotNull(personFour);
+		assertNotNull(personFour.getKey());
+		assertNotNull(personFour.getLinks());
+		assertTrue(personFour.toString().contains("links: [</person/4>;rel=\"self\"]"));
+		assertEquals("Address Test4", personFour.getAddress());
+		assertEquals("First Name Test4", personFour.getFirstName());
+		assertEquals("Last Name Test4", personFour.getLastName());
+		assertEquals("Male", personFour.getGender());
+
 	}
 
 	@Test
@@ -135,7 +164,14 @@ class PersonServicesTest {
 
 	@Test
 	void testDelete() {
-		fail("Not yet implemented");
+		Person person = input.mockEntity(1);
+		person.setId(1L);
+		
+		Person persisted = person;
+		persisted.setId(1L);
+		
+		when(repository.findById(1L)).thenReturn(Optional.of(person));
+		service.delete(1L);
 	}
 
 }
